@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "ATmega328P",
+            "compilerPath": "/opt/homebrew/opt/avr-gcc@15/bin/avr-gcc",
+            "compilerArgs": [
+                "-mmcu=atmega328p"
+            ],
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/opt/homebrew/opt/avr-gcc@15/avr/include"
+            ],
+            "cStandard": "c11",
+            "intelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}
