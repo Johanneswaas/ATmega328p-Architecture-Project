@@ -6,17 +6,17 @@
 
 /**
  *----------------------------------------------------------------------------*
- * @file Dio_cfg.c
- * @brief Application-level DIO configuration definition.
+ * @file Event.c
+ * @brief Event middleware implementation.
  * @author waj42553
- * @date 2026-09-11
+ * @date 2026-09-18
  * @version 0.1
  *----------------------------------------------------------------------------*/
 
 /**
- * ================================ DIO DRIVER ===============================
- * @ingroup Dio
- * @addtogroup Dio
+ * ================================ EVENT ===================================
+ * @ingroup Event
+ * @addtogroup Event
  * @{
  */
 
@@ -24,7 +24,7 @@
  * Includes
  *---------------------------------------------------------------------------*/
 
-#include "Dio_cfg.h"
+#include "Event.h"
 
 /*----------------------------------------------------------------------------
  * Defines/Typedefs
@@ -38,9 +38,7 @@
  * Global Variables
  *---------------------------------------------------------------------------*/
 
-const DIO_Cfg_t DioConfig[CFGS] = { {DIO_PORT_C, 1, DIO_INPUT, DIO_INIT_PULLUP_ON},
-                                    {DIO_PORT_C, 3, DIO_INPUT, DIO_INIT_PULLUP_OFF},
-                                    {DIO_PORT_D, 6, DIO_OUTPUT, DIO_INIT_LOW} };
+static volatile EVENT_t events = 0;
 
 /*----------------------------------------------------------------------------
  * Static/File-scope Variables (compilation unit)
@@ -49,3 +47,51 @@ const DIO_Cfg_t DioConfig[CFGS] = { {DIO_PORT_C, 1, DIO_INPUT, DIO_INIT_PULLUP_O
 /*----------------------------------------------------------------------------
  * Functions
  *---------------------------------------------------------------------------*/
+
+/**
+ * @brief Sets one or more pending event flags.
+ *
+ * The bits set in @p ev are added to the pending event mask. Existing
+ * pending events remain set.
+ *
+ * @param[in] ev Event mask to set.
+ */
+void Event_Set(EVENT_t ev)
+{
+    events |= ev;
+}
+
+/**
+ * @brief Clears one or more pending event flags.
+ *
+ * The bits set in @p ev are removed from the pending event mask.
+ *
+ * @param[in] ev Event mask to clear.
+ */
+void Event_Clear(EVENT_t ev)
+{
+    events &= ~ev;
+}
+
+/**
+ * @brief Checks whether one or more event flags are pending.
+ *
+ * @param[in] ev Event mask to check.
+ * @return SET if at least one bit in @p ev is pending; otherwise NOT_SET.
+ */
+EVENT_State_t Event_IsSet(EVENT_t ev)
+{
+    return ((events & ev) != 0u) ? SET : NOT_SET;
+}
+
+/**
+ * @brief Returns the current pending event mask.
+ *
+ * This function does not clear any pending events.
+ *
+ * @return Current event mask.
+ */
+EVENT_t Event_Get(void)
+{
+    return events;
+}

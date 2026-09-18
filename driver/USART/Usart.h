@@ -6,36 +6,46 @@
 
 /**
  *----------------------------------------------------------------------------*
- * @file Dio_cfg.h
- * @brief Application-level DIO configuration interface.
+ * @file Usart.h
+ * @brief Public interface for the ATmega328P USART driver.
  * @author waj42553
- * @date 2026-09-11
+ * @date 2026-09-12
  * @version 0.1
  *----------------------------------------------------------------------------*/
 
 /**
- * ================================ DIO DRIVER ===============================
- * @ingroup Dio
- * @addtogroup Dio
+ * =============================== USART DRIVER =============================
+ * @defgroup Usart USART Driver
  * @{
  */
 
-#ifndef DIO_CFG_H
-#define DIO_CFG_H
+#ifndef USART_H
+#define USART_H
 
 /*----------------------------------------------------------------------------
  * Includes
  *---------------------------------------------------------------------------*/
 
-#include "Dio.h"
+#include <stdint.h>
 
 /*----------------------------------------------------------------------------
  * Defines/Typedefs
  *---------------------------------------------------------------------------*/
 
-#define CFGS 3
+#define EVENT_USART_TX_XOFF   (1u << 0)
 
-extern const DIO_Cfg_t DioConfig[CFGS];
+/*----------------------------------------------------------------------------
+ * Global Variables
+ *---------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------
+ * Functions
+ *---------------------------------------------------------------------------*/
 
-#endif /* DIO_CFG_H */
+USART_Init();
+
+USART_Transmit(const char c);
+
+USART_Transmit_Msg(const char* c);
+
+#endif /* USART_H */
